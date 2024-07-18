@@ -3,31 +3,83 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.kobie.vue;
+
 import com.kobie.controller.MagasinController;
 import com.kobie.model.Magasin;
+import com.kobie.props.PropsTableau;
+import javax.swing.JOptionPane;
+import javax.swing.table.JTableHeader;
+
 /**
  *
  * @author kobie
  */
-public class Magasin extends javax.swing.JInternalFrame {
+public class InterfaceMagasin extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Magasin
      */
-    public Magasin() {
+    public InterfaceMagasin() {
         initComponents();
     }
-    private static String mNom, mDescription;
-    public static void enregistrerMagasin (){        
-         // Récuperation des donnéses du formulaire
-        mNom = nomMag.getText().trim();
-        mDescription = descriptionMag.getText().trim();
-        // Créez un objet Magasin
-        Magasin magasin = new Magasin(mNom, mDescription);
-        // Enregistrez le magasin dans la base de données
-        MagasinController.saveMagasin(magasin);
+ private static int rep;
+    // private static String mNom, mDescription;
+    //FONCTION D'ENREGISTREMENT DES DONsNEES********************************************************************************************************************
+    public static void enregistrerMagasin() {
+        // Récuperation des donnéses du formulaire
+        String mNom = nomMag.getText().trim();
+        if ((mNom.length() == 0)) {
+            JOptionPane.showMessageDialog(null, "Saisir le nom du magasin");
+            return;
+        }
+        String mDescription = descriptionMag.getText().trim();
+        Magasin magasin = new Magasin(mNom, mDescription); // Créez un objet InterfaceMagasin      
+        MagasinController.saveMagasin(magasin);  // Enregistrez le magasin dans la base de données
+        JOptionPane.showMessageDialog(null, "Enregistrement validé");
+        nomMag.setText("");
+        descriptionMag.setText("");
+    }
+    
+    //FONCTION DE MODIFICATION DE MAGASIN********************************************************************************************************************
+    public static void modifierMagasin() {
+        // Récuperation des donnéses du formulaire
+        String mNom = nomMag.getText().trim();
+        if ((mNom.length() == 0)) {
+            JOptionPane.showMessageDialog(null, "Saisir le nom du magasin");
+            return;
+        }
+        String mDescription = descriptionMag.getText().trim();
+        rep = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment modifier ce magasin?", "Modifications de magasin", JOptionPane.YES_NO_OPTION);
+        if (rep == JOptionPane.YES_OPTION) {
+            Magasin magasin = new Magasin(mNom, mDescription);
+            MagasinController.updateMagasin(magasin); // Executer la méthode de modification dans la base de données
+            JOptionPane.showMessageDialog(null, "Modification validée");
+            nomMag.setText("");
+            descriptionMag.setText("");
+        }
+    }
+    
+    //FONCTION DE SUPPRESSION********************************************************************************************************************
+    public static void supprimerMagasin() {
+        rep = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer ce magasin?", "Suppression de magasin", JOptionPane.YES_NO_OPTION);
+        if (rep == JOptionPane.YES_OPTION) {
+            Magasin magasin = new Magasin();
+            MagasinController.deleteMagasin(magasin);// Executer la méthode de suppression des données    
+            JOptionPane.showMessageDialog(null, "Suppression de magasin");
+            nomMag.setText("");
+            descriptionMag.setText("");
+        }
+    }
 
-}
+    //FONCTION D'AFFICHAGE POUR MODIFICATION********************************************************************************************************************
+    public static void afficherMagasin() {
+        MagasinController.displayMagasin(); // Executer la méthode d'affichage des données        
+    }
+
+    //FONCTION D'AFFICHAGE DES DONNEES********************************************************************************************************************
+    public static void listerMagasin() {
+        MagasinController.listAll(); // Executer la méthode d'affichage des données  
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,14 +104,31 @@ public class Magasin extends javax.swing.JInternalFrame {
         btn_modifier = new javax.swing.JButton();
         btn_supprimer = new javax.swing.JButton();
         btn_rafraichir = new javax.swing.JButton();
-        btn_fermer = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Gestion des magasins");
+        setFrameIcon(null);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameActivated(evt);
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
 
         panneauPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         panneauPrincipal.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
@@ -108,7 +177,7 @@ public class Magasin extends javax.swing.JInternalFrame {
         );
 
         tableau_magasin.setAutoCreateRowSorter(true);
-        tableau_magasin.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        tableau_magasin.setFont(new java.awt.Font("Liberation Sans", 0, 16)); // NOI18N
         tableau_magasin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -128,6 +197,13 @@ public class Magasin extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableau_magasin.setSelectionBackground(new java.awt.Color(255, 153, 0));
+        tableau_magasin.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        tableau_magasin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau_magasinMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableau_magasin);
         if (tableau_magasin.getColumnModel().getColumnCount() > 0) {
             tableau_magasin.getColumnModel().getColumn(0).setMinWidth(0);
@@ -144,7 +220,7 @@ public class Magasin extends javax.swing.JInternalFrame {
         btn_nouveau.setForeground(new java.awt.Color(51, 0, 204));
         btn_nouveau.setText("Nouveau");
         btn_nouveau.setToolTipText("");
-        btn_nouveau.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
+        btn_nouveau.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 1, true));
         btn_nouveau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_nouveauActionPerformed(evt);
@@ -155,7 +231,7 @@ public class Magasin extends javax.swing.JInternalFrame {
         btn_enregistrer.setForeground(new java.awt.Color(51, 0, 204));
         btn_enregistrer.setText("Enregistrer");
         btn_enregistrer.setToolTipText("");
-        btn_enregistrer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
+        btn_enregistrer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 1, true));
         btn_enregistrer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_enregistrerActionPerformed(evt);
@@ -166,25 +242,34 @@ public class Magasin extends javax.swing.JInternalFrame {
         btn_modifier.setForeground(new java.awt.Color(51, 0, 204));
         btn_modifier.setText("Modifier");
         btn_modifier.setToolTipText("");
-        btn_modifier.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
+        btn_modifier.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 1, true));
+        btn_modifier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modifierActionPerformed(evt);
+            }
+        });
 
         btn_supprimer.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         btn_supprimer.setForeground(new java.awt.Color(51, 0, 204));
         btn_supprimer.setText("Supprimer");
         btn_supprimer.setToolTipText("");
-        btn_supprimer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
+        btn_supprimer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 1, true));
+        btn_supprimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_supprimerActionPerformed(evt);
+            }
+        });
 
         btn_rafraichir.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
         btn_rafraichir.setForeground(new java.awt.Color(51, 0, 204));
         btn_rafraichir.setText("Rafraîchir la liste");
         btn_rafraichir.setToolTipText("");
-        btn_rafraichir.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
-
-        btn_fermer.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
-        btn_fermer.setForeground(new java.awt.Color(51, 0, 204));
-        btn_fermer.setText("Fermer");
-        btn_fermer.setToolTipText("");
-        btn_fermer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 2, true));
+        btn_rafraichir.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 0, 204), 1, true));
+        btn_rafraichir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_rafraichirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -197,12 +282,11 @@ public class Magasin extends javax.swing.JInternalFrame {
                     .addComponent(btn_enregistrer)
                     .addComponent(btn_modifier)
                     .addComponent(btn_supprimer)
-                    .addComponent(btn_fermer)
                     .addComponent(btn_rafraichir, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_enregistrer, btn_fermer, btn_modifier, btn_nouveau, btn_rafraichir, btn_supprimer});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_enregistrer, btn_modifier, btn_nouveau, btn_rafraichir, btn_supprimer});
 
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,12 +301,10 @@ public class Magasin extends javax.swing.JInternalFrame {
                 .addComponent(btn_supprimer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_rafraichir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_fermer)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_enregistrer, btn_fermer, btn_modifier, btn_nouveau, btn_rafraichir, btn_supprimer});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_enregistrer, btn_modifier, btn_nouveau, btn_rafraichir, btn_supprimer});
 
         javax.swing.GroupLayout panneauPrincipalLayout = new javax.swing.GroupLayout(panneauPrincipal);
         panneauPrincipal.setLayout(panneauPrincipalLayout);
@@ -245,7 +327,7 @@ public class Magasin extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panneauPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -270,28 +352,64 @@ public class Magasin extends javax.swing.JInternalFrame {
 
     private void btn_nouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nouveauActionPerformed
         // TODO add your handling code here:
+        nomMag.setText("");
+        descriptionMag.setText("");
     }//GEN-LAST:event_btn_nouveauActionPerformed
 
     private void btn_enregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_enregistrerActionPerformed
-        enregistrerMagasin ();
+        enregistrerMagasin();
     }//GEN-LAST:event_btn_enregistrerActionPerformed
+
+    private void btn_rafraichirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_rafraichirActionPerformed
+        // TODO add your handling code here:
+        listerMagasin();
+    }//GEN-LAST:event_btn_rafraichirActionPerformed
+
+    private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formInternalFrameActivated
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        // TODO add your handling code here:
+        listerMagasin();
+        JTableHeader header = tableau_magasin.getTableHeader();
+        header.setDefaultRenderer(new PropsTableau());
+
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void tableau_magasinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau_magasinMouseClicked
+        // TODO add your handling code here:
+        afficherMagasin();
+    }//GEN-LAST:event_tableau_magasinMouseClicked
+
+    private void btn_modifierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modifierActionPerformed
+        // TODO add your handling code here:
+        modifierMagasin();
+        listerMagasin();
+    }//GEN-LAST:event_btn_modifierActionPerformed
+
+    private void btn_supprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_supprimerActionPerformed
+        // TODO add your handling code here:
+        supprimerMagasin();
+        listerMagasin();
+    }//GEN-LAST:event_btn_supprimerActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_enregistrer;
-    private javax.swing.JButton btn_fermer;
     private javax.swing.JButton btn_modifier;
     private javax.swing.JButton btn_nouveau;
     private javax.swing.JButton btn_rafraichir;
     private javax.swing.JButton btn_supprimer;
-    private static javax.swing.JTextField descriptionMag;
+    public static javax.swing.JTextField descriptionMag;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private static javax.swing.JTextField nomMag;
-    private javax.swing.JPanel panneauForms;
-    private javax.swing.JPanel panneauPrincipal;
-    private javax.swing.JTable tableau_magasin;
+    public static javax.swing.JTextField nomMag;
+    public static javax.swing.JPanel panneauForms;
+    public static javax.swing.JPanel panneauPrincipal;
+    public static javax.swing.JTable tableau_magasin;
     // End of variables declaration//GEN-END:variables
 }

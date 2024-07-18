@@ -9,12 +9,16 @@ package com.kobie.model;
  * @author kobie
  */
 public class Magasin {
+
     private int idM;
     private String nomM;
     private String descriptionM;
-    
-       // Constructeurs, getters et setters
 
+    public Magasin() {
+       // throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    // Constructeurs, getters et setters
     public int getIdM() {
         return idM;
     }
@@ -44,5 +48,4 @@ public class Magasin {
         this.descriptionM = descriptionM;
     }
 
-   
 }

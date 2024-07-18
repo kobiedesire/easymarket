@@ -4,6 +4,9 @@
  */
 package com.kobie.vue;
 
+import java.awt.Color;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author kobie
@@ -42,6 +45,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        btn_acceuil = new javax.swing.JButton();
         panneauEntete = new javax.swing.JPanel();
         btn_moncompte = new javax.swing.JButton();
         btn_deconnexion = new javax.swing.JButton();
@@ -116,6 +120,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 204, 0));
         jLabel4.setText("Heure ");
 
+        btn_acceuil.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        btn_acceuil.setText("Acceuil");
+        btn_acceuil.setBorder(null);
+        btn_acceuil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_acceuilActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panneauMenuLayout = new javax.swing.GroupLayout(panneauMenu);
         panneauMenu.setLayout(panneauMenuLayout);
         panneauMenuLayout.setHorizontalGroup(
@@ -140,14 +153,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(panneauMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btn_acceuil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(panneauMenuLayout.createSequentialGroup()
                         .addGap(90, 90, 90)
                         .addComponent(jLabel1)))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        panneauMenuLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_magasin, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8, jButton9});
+        panneauMenuLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btn_acceuil, btn_magasin, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8, jButton9});
 
         panneauMenuLayout.setVerticalGroup(
             panneauMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,8 +177,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)))
-                .addGap(57, 57, 57)
-                .addComponent(btn_magasin)
+                .addGap(45, 45, 45)
+                .addComponent(btn_acceuil, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_magasin, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
                 .addGap(18, 18, 18)
@@ -181,10 +197,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jButton7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap(203, Short.MAX_VALUE))
         );
 
-        panneauMenuLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_magasin, jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8, jButton9});
+        panneauMenuLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton2, jButton3, jButton4, jButton5, jButton6, jButton7, jButton8, jButton9});
+
+        panneauMenuLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btn_acceuil, btn_magasin});
 
         panneauEntete.setBackground(new java.awt.Color(255, 255, 255));
         panneauEntete.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
@@ -327,9 +345,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void btn_magasinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_magasinActionPerformed
        panneauBureau.removeAll();
-       Magasin mag = new Magasin();
+       InterfaceMagasin mag = new InterfaceMagasin();
        panneauBureau.add(mag).setVisible(true);
+       
+       
+      
+       
     }//GEN-LAST:event_btn_magasinActionPerformed
+
+    private void btn_acceuilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceuilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_acceuilActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,6 +393,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_acceuil;
     private javax.swing.JButton btn_deconnexion;
     private javax.swing.JButton btn_magasin;
     private javax.swing.JButton btn_moncompte;
